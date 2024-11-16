@@ -19,7 +19,7 @@ const Attendance = () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.get(
-                    'http://localhost:8080/api/attendance/status',
+                    'http://scanqr-jdez.onrender.com/api/attendance/status',
                     {
                         headers: { Authorization: `Bearer ${token}` }
                     }
@@ -116,7 +116,7 @@ const Attendance = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:8080/api/attendance/add',
+                'http://scanqr-jdez.onrender.com/api/attendance/add',
                 payload,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
