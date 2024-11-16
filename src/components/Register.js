@@ -43,7 +43,7 @@ const Register = () => {
                 }
             }
             // Send username, email, password, and role to the backend
-            await api.post('/register', { username, email, password, role });
+            await api.post('http://scanqr-jdez.onrender.com/api/register', { username, email, password, role });
             setMessage('Registration successful. You can now log in.');
             navigate('/login'); // Navigate to login page after successful registration
         } catch (error) {
