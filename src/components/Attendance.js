@@ -106,17 +106,17 @@ const Attendance = () => {
             }
             setCookie('hasMarkedTea', true, { path: '/', expires });
         }
-        if (attendanceType === 'logout') {
-            if (currentHour >=19 || currentHour <= 19.5) {
-                setMessage("logout attendance can only be marked between 7 PM and 7:30 PM.");
-                return;
-            }
-            if (cookies.hasMarkedLogout) {
-                setMessage("logout attendance can only be marked once per day.");
-                return;
-            }
-            setCookie('hasMarkedLogout', true, { path: '/', expires });
-        }
+        // if (attendanceType === 'logout') {
+        //     if (currentHour >=19 || currentHour <= 19.5) {
+        //         setMessage("logout attendance can only be marked between 7 PM and 7:30 PM.");
+        //         return;
+        //     }
+        //     if (cookies.hasMarkedLogout) {
+        //         setMessage("logout attendance can only be marked once per day.");
+        //         return;
+        //     }
+        //     setCookie('hasMarkedLogout', true, { path: '/', expires });
+        // }
 
         const payload = {
             loginOption: attendanceType,
