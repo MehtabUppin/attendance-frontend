@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { useSwipeable } from 'react-swipeable';
+import { useSwipeable } from 'react-swipeable'; 
 import { useCookies } from 'react-cookie';
 
 const Attendance = () => {
