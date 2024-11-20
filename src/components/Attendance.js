@@ -116,7 +116,7 @@ const Attendance = () => {
 
         try {
             const response = await axios.post(
-                'http://scanqr-jdez.onrender.com/api/attendance/add',
+                'https://scanqr-jdez.onrender.com/api/attendance/add',
                 payload,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
