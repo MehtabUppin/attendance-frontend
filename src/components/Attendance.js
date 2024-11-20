@@ -70,7 +70,7 @@ const Attendance = () => {
         // Morning login time (9:30 AM to 10:00 AM)
         if (attendanceType === 'login') {
             console.log(currentHour)
-            if (currentHour < 9.5 || currentHour >= 10) {
+            if (currentHour <= 9 || currentHour <= 9.5) {
                 setMessage("Morning login is only available between 9:30 AM and 10:00 AM.");
                 return;
             }
@@ -83,8 +83,8 @@ const Attendance = () => {
 
         // Lunch attendance time (12:30 PM to 2:30 PM)
         if (attendanceType === 'lunch') {
-            if (currentHour < 12.5 || currentHour >= 14.5) {
-                setMessage("Lunch attendance can only be marked between 12 PM and 1:30 PM.");
+            if (currentHour <= 12.5 || currentHour <= 14.5) {
+                setMessage("Lunch attendance can only be marked between 12:30 PM and 1:30 PM.");
                 return;
             }
             if (cookies.hasMarkedLunch) {
@@ -96,7 +96,7 @@ const Attendance = () => {
 
         // Tea attendance time (4:00 PM to 4:30 PM)
         if (attendanceType === 'tea') {
-            if (currentHour <=15.5 || currentHour >= 16.5) {
+            if (currentHour <=16 || currentHour <= 16.5) {
                 setMessage("Tea attendance can only be marked between 4:00 PM and 4:30 PM.");
                 return;
             }
