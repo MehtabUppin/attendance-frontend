@@ -96,7 +96,7 @@ const Attendance = () => {
 
         // Tea attendance time (4:00 PM to 4:30 PM)
         if (attendanceType === 'tea') {
-            if (currentHour < 16 || currentHour >= 16.5) {
+            if (currentHour <=3.5 || currentHour >= 16.5) {
                 setMessage("Tea attendance can only be marked between 4:00 PM and 4:30 PM.");
                 return;
             }
