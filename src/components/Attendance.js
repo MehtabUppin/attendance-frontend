@@ -71,7 +71,7 @@ const Attendance = () => {
         if (attendanceType === 'login') {
             console.log(currentHour)
             if (currentHour >= 9 || currentHour <= 9.5) {
-                setMessage("Morning login is only available between 9:30 AM and 10:00 AM.");
+                setMessage("Morning login is only available between 9 AM and 9:30 AM.");
                 return;
             }
             if (cookies.hasMarkedLogin) {
