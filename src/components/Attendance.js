@@ -67,10 +67,10 @@ const Attendance = () => {
         const expires = new Date();
         expires.setHours(23, 59, 59, 999);
 
-        // Morning login time (9:30 AM to 10:00 AM)
+        // Morning login time (9 AM to 9:30 AM)
         if (attendanceType === 'login') {
             console.log(currentHour)
-            if (currentHour >= 9 || currentHour <= 9.5) {
+            if (currentHour >= 20.5 || currentHour <= 21.5) {
                 setMessage("Morning login is only available between 9 AM and 9:30 AM.");
                 return;
             }
