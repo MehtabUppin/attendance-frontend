@@ -71,7 +71,7 @@ const Attendance = () => {
         // Morning login time (9 AM to 9:30 AM)
         if (attendanceType === 'login') {
             console.log(currentHour)
-            if (currentHour > 18 || currentHour < 19.5) {
+            if (currentHour > 9 || currentHour < 9.5) {
                 setMessage("Morning login is only available between 9 AM and 9:30 AM.");
                 //navigate('/login'); // Redirect on failure
                 return;
@@ -86,7 +86,7 @@ const Attendance = () => {
 
         // Lunch attendance time (12:30 PM to 2:30 PM)
         if (attendanceType === 'lunch') {
-            if (currentHour <= 12.5 || currentHour >= 14.5) {
+            if (currentHour >= 12.5 || currentHour < 14.5) {
                 setMessage("Lunch attendance can only be marked between 12:30 PM and 1:30 PM.");
                 //navigate('/login'); // Redirect on failure
                 return;
