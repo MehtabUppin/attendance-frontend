@@ -73,12 +73,12 @@ const Attendance = () => {
             console.log(currentHour)
             if (currentHour > 5 || currentHour < 7) {
                 setMessage("Morning login is only available between 9 AM and 9:30 AM.");
-                navigate('/login'); // Redirect on failure
+                //navigate('/login'); // Redirect on failure
                 return;
             }
             if (cookies.hasMarkedLogin) {
                 setMessage("You have already marked your morning login for today.");
-                navigate('/login'); // Redirect on failure
+                //navigate('/login'); // Redirect on failure
                 return;
             }
             setCookie('hasMarkedLogin', true, { path: '/', expires });
@@ -88,12 +88,12 @@ const Attendance = () => {
         if (attendanceType === 'lunch') {
             if (currentHour <= 12.5 || currentHour >= 14.5) {
                 setMessage("Lunch attendance can only be marked between 12:30 PM and 1:30 PM.");
-                navigate('/login'); // Redirect on failure
+                //navigate('/login'); // Redirect on failure
                 return;
             }
             if (cookies.hasMarkedLunch) {
                 setMessage("Lunch attendance can only be marked once per day.");
-                navigate('/login'); // Redirect on failure
+                //navigate('/login'); // Redirect on failure
                 return;
             }
             setCookie('hasMarkedLunch', true, { path: '/', expires });
@@ -103,7 +103,7 @@ const Attendance = () => {
         if (attendanceType === 'tea') {
             if (currentHour >=16 || currentHour <= 17.5) {
                 setMessage("Tea attendance can only be marked between 4:00 PM and 4:30 PM.");
-                navigate('/login'); // Redirect on failure
+                //navigate('/login'); // Redirect on failure
                 return;
             }
             if (cookies.hasMarkedTea) {
