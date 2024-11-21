@@ -71,7 +71,7 @@ const Attendance = () => {
         // Morning login time (9 AM to 9:30 AM)
         if (attendanceType === 'login') {
             console.log(currentHour)
-            if (currentHour < 5 || currentHour > 7) {
+            if (currentHour > 5 || currentHour < 7) {
                 setMessage("Morning login is only available between 9 AM and 9:30 AM.");
                 navigate('/login'); // Redirect on failure
                 return;
