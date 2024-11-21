@@ -95,7 +95,7 @@ const Attendance = () => {
             }
             setCookie('hasMarkedLunch', true, { path: '/', expires });
         } else if (attendanceType === 'tea') {
-            if (timeInMinutes < 960 || timeInMinutes > 1020) { // 4:00 PM to 5:00 PM
+            if (timeInMinutes < 930 || timeInMinutes > 1020) { // 4:00 PM to 5:00 PM
                 setMessage("Tea attendance can only be marked between 4:00 PM and 5:00 PM.");
                 return;
             }
