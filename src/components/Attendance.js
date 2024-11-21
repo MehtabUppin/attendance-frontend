@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import { useSwipeable } from 'react-swipeable'; 
+import jwtDecode from 'jwt-decode';
+import { useSwipeable } from 'react-swipeable';
 import { useCookies } from 'react-cookie';
 
 const Attendance = () => {
@@ -11,26 +11,24 @@ const Attendance = () => {
     const [message, setMessage] = useState('');
     const [isSwiped, setIsSwiped] = useState(false);
     const [buttonSubmitted, setButtonSubmitted] = useState(false);
-    const [cookies, setCookie] = useCookies(['hasMarkedLogin', 'hasMarkedLunch', 'hasMarkedTea']);
+    const [cookies, setCookie] = useCookies(['hasMarkedLogin', 'hasMarkedLunch', 'hasMarkedTea', 'hasMarkedLogout']);
 
     useEffect(() => {
-        // Fetch the user's attendance status for the day
         const fetchAttendanceStatus = async () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.get(
                     'https://scanqr-jdez.onrender.com/api/attendance/status',
-                    {
-                        headers: { Authorization: `Bearer ${token}` }
-                    }
+                    { headers: { Authorization: `Bearer ${token}` } }
                 );
                 const { loginMarked, lunchMarked, teaMarked } = response.data;
                 const expires = new Date();
-                expires.setHours(23, 59, 59, 999); 
+                expires.setHours(23, 59, 59, 999);
 
-                setCookie('hasMarkedLogin', loginMarked, { path: '/', expires: new Date().setHours(23, 59, 59, 999) });
-                setCookie('hasMarkedLunch', lunchMarked, { path: '/', expires: new Date().setHours(23, 59, 59, 999) });
-                setCookie('hasMarkedTea', teaMarked, { path: '/', expires: new Date().setHours(23, 59, 59, 999) });
+                setCookie('hasMarkedLogin', loginMarked, { path: '/', expires });
+                setCookie('hasMarkedLunch', lunchMarked, { path: '/', expires });
+                setCookie('hasMarkedTea', teaMarked, { path: '/', expires });
+                setCookie('hasMarkedLogout', false, { path: '/', expires });
             } catch (error) {
                 console.error("Failed to fetch attendance status:", error);
             }
@@ -64,14 +62,21 @@ const Attendance = () => {
         }
 
         const currentHour = new Date().getHours();
+        const currentMinute = new Date().getMinutes();
+        const timeInMinutes = currentHour * 60 + currentMinute; // Calculate the total minutes elapsed in the day
         const expires = new Date();
         expires.setHours(23, 59, 59, 999);
 
-        // Morning login time (9 AM to 9:30 AM)
+        // Attendance type validations
+        if (!attendanceType) {
+            setMessage("Please select an attendance type.");
+            navigate('/attendancetype'); // Redirect to attendance type selection
+            return;
+        }
+
         if (attendanceType === 'login') {
-            console.log(currentHour)
-            if (currentHour < 10 || currentHour > 11) {
-                setMessage("Morning login is only available between 9 AM and 9:30 AM.");
+            if (timeInMinutes < 540 || timeInMinutes > 570) { // 9:00 AM to 9:30 AM
+                setMessage("Morning login is only available between 9:00 AM and 9:30 AM.");
                 return;
             }
             if (cookies.hasMarkedLogin) {
@@ -79,44 +84,37 @@ const Attendance = () => {
                 return;
             }
             setCookie('hasMarkedLogin', true, { path: '/', expires });
-        }
-
-        // Lunch attendance time (12:30 PM to 2:30 PM)
-        if (attendanceType === 'lunch') {
-            if (currentHour <= 12.5 || currentHour >= 14.5) {
-                setMessage("Lunch attendance can only be marked between 12:30 PM and 1:30 PM.");
+        } else if (attendanceType === 'lunch') {
+            if (timeInMinutes < 750 || timeInMinutes > 870) { // 12:30 PM to 2:30 PM
+                setMessage("Lunch attendance can only be marked between 12:30 PM and 2:30 PM.");
                 return;
             }
             if (cookies.hasMarkedLunch) {
-                setMessage("Lunch attendance can only be marked once per day.");
+                setMessage("You have already marked your lunch for today.");
                 return;
             }
             setCookie('hasMarkedLunch', true, { path: '/', expires });
-        }
-
-        // Tea attendance time (4:00 PM to 4:30 PM)
-        if (attendanceType === 'tea') {
-            if (currentHour >=16 || currentHour <= 16.5) {
-                setMessage("Tea attendance can only be marked between 4:00 PM and 4:30 PM.");
+        } else if (attendanceType === 'tea') {
+            if (timeInMinutes < 960 || timeInMinutes > 1020) { // 4:00 PM to 5:00 PM
+                setMessage("Tea attendance can only be marked between 4:00 PM and 5:00 PM.");
                 return;
             }
             if (cookies.hasMarkedTea) {
-                setMessage("Tea attendance can only be marked once per day.");
+                setMessage("You have already marked your tea break for today.");
                 return;
             }
             setCookie('hasMarkedTea', true, { path: '/', expires });
+        } else if (attendanceType === 'logout') {
+            if (timeInMinutes < 1080 || timeInMinutes > 1110) { // 6:00 PM to 6:30 PM
+                setMessage("Logout attendance can only be marked between 6:00 PM and 6:30 PM.");
+                return;
+            }
+            if (cookies.hasMarkedLogout) {
+                setMessage("You have already marked your logout for today.");
+                return;
+            }
+            setCookie('hasMarkedLogout', true, { path: '/', expires });
         }
-        // if (attendanceType === 'logout') {
-        //     if (currentHour >=19 || currentHour <= 19.5) {
-        //         setMessage("logout attendance can only be marked between 7 PM and 7:30 PM.");
-        //         return;
-        //     }
-        //     if (cookies.hasMarkedLogout) {
-        //         setMessage("logout attendance can only be marked once per day.");
-        //         return;
-        //     }
-        //     setCookie('hasMarkedLogout', true, { path: '/', expires });
-        // }
 
         const payload = {
             loginOption: attendanceType,
@@ -150,18 +148,16 @@ const Attendance = () => {
         }
     };
 
-    const onSwipedRight = () => {
-        if (!buttonSubmitted) {
-            setIsSwiped(true);
-            setButtonSubmitted(true);
-            setTimeout(() => {
-                handleAttendance();
-            }, 500);
-        }
-    };
-
     const swipeHandlers = useSwipeable({
-        onSwipedRight,
+        onSwipedRight: () => {
+            if (!buttonSubmitted) {
+                setIsSwiped(true);
+                setButtonSubmitted(true);
+                setTimeout(() => {
+                    handleAttendance();
+                }, 500);
+            }
+        },
         trackMouse: true,
     });
 
@@ -186,23 +182,12 @@ const Attendance = () => {
                     <option value="logout">Logout</option>
                 </select>
 
-                <div className="relative w-64 h-12 bg-gray-200 rounded-full overflow-hidden cursor-pointer">
-                    {!isSwiped ? (
-                        <div
-                            className="absolute top-0 left-0 h-full bg-red-500 text-white flex items-center justify-center rounded-full transition-all duration-300 ease-in-out"
-                            style={{ width: '50%' }}
-                            onClick={onSwipedRight}
-                        >
-                            Slide to Send
-                        </div>
-                    ) : (
-                        <div
-                            className="absolute top-0 right-0 h-full w-full bg-green-500 text-white flex items-center justify-center rounded-full transition-all duration-300 ease-in-out"
-                        >
-                            Sending...
-                        </div>
-                    )}
-                </div>
+                <button
+                    className="block w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition-all"
+                    onClick={handleAttendance}
+                >
+                    Mark Attendance
+                </button>
 
                 {message && (
                     <p className="mt-4 text-center text-teal-600 font-semibold">
