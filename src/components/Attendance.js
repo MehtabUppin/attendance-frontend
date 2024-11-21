@@ -70,7 +70,7 @@ const Attendance = () => {
         // Morning login time (9 AM to 9:30 AM)
         if (attendanceType === 'login') {
             console.log(currentHour)
-            if (currentHour > 7.5 || currentHour <= 9.5) {
+            if (currentHour >= 7.5 && currentHour <= 9.5) {
                 setMessage("Morning login is only available between 9 AM and 9:30 AM.");
                 return;
             }
