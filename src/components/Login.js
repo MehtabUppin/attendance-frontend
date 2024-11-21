@@ -17,6 +17,10 @@ const Login = () => {
             // Save token and user ID to local storage
             localStorage.setItem('token', loginResponse.token);
             localStorage.setItem('id', loginResponse.id);
+            // Delete cookies
+            setCookie('hasMarkedLogin', '', { path: '/', expires: new Date(0) });
+            setCookie('hasMarkedLunch', '', { path: '/', expires: new Date(0) });
+            setCookie('hasMarkedTea', '', { path: '/', expires: new Date(0) });
 
 
 
