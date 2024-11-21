@@ -21,7 +21,7 @@ const Attendance = () => {
                 const response = await axios.get(
                     'https://scanqr-jdez.onrender.com/api/attendance/status',
                     {
-                        headers: { Authorization: Bearer ${token} }
+                        headers: { Authorization: `Bearer ${token}` }
                     }
                 );
                 const { loginMarked, lunchMarked, teaMarked } = response.data;
