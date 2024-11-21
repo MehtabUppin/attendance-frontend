@@ -18,9 +18,9 @@ const Login = () => {
             localStorage.setItem('token', loginResponse.token);
             localStorage.setItem('id', loginResponse.id);
             // Delete cookies
-            setCookie('hasMarkedLogin', '', { path: '/', expires: new Date(0) });
-            setCookie('hasMarkedLunch', '', { path: '/', expires: new Date(0) });
-            setCookie('hasMarkedTea', '', { path: '/', expires: new Date(0) });
+            // setCookie('hasMarkedLogin', '', { path: '/', expires: new Date(0) });
+            // setCookie('hasMarkedLunch', '', { path: '/', expires: new Date(0) });
+            // setCookie('hasMarkedTea', '', { path: '/', expires: new Date(0) });
 
 
 
