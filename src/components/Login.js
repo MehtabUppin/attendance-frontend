@@ -11,7 +11,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://scanqr-jdez.onrender.com/api/login', { email, password });
+            const response = await axios.post('https://modified-attendance-app.onrender.com/api/login', { email, password });
             const loginResponse = response.data;
 
             // Save token and user ID to local storage
