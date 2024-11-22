@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://scanqr-jdez.onrender.com/api', // Your backend API base URL
+    baseURL: 'https://modified-attendance-app.onrender.com/api', // Your backend API base URL
 });
 
 export default api;
